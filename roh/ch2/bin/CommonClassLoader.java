@@ -3,13 +3,14 @@ package food869.was.bin;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CommonClassLoader extends URLClassLoader {
-	private HashMap<String, AppClassLoader> childMap;
+	private Map<String, AppClassLoader> appClassLoaderMap;
 
 	public CommonClassLoader(ClassLoader parent) {
 		this(new URL[0], parent);
-		childMap = new HashMap<>();
+		appClassLoaderMap = new HashMap<>();
 	}
 
 	public CommonClassLoader(URL[] urls, ClassLoader parent) {
@@ -22,14 +23,14 @@ public class CommonClassLoader extends URLClassLoader {
 		}
 	}
 
-	final AppClassLoader makeAppCL(String webApp) {
-		AppClassLoader child = new AppClassLoader(this);
-		childMap.put(webApp, child);
-		return child;
+	final AppClassLoader makeAppClassLoader(String webApp) {
+		AppClassLoader appClassLoader = new AppClassLoader(this);
+		appClassLoaderMap.put(webApp, appClassLoader);
+		return appClassLoader;
 	}
 
 	public final AppClassLoader getChild(String webApp) {
-		return childMap.get(webApp);
+		return appClassLoaderMap.get(webApp);
 	}
 
 }
