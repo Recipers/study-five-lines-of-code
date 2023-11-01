@@ -25,4 +25,13 @@ public class IBKBank implements BankCode {
     return false;
   }
 
+  @Override
+  public String formatAccountNumber(String accountNumber) {
+
+    if (accountNumber.length() == 12) {
+      return BankUtil.addHyphens(accountNumber, new int[]{3, 5, 10});
+    }
+    return BankUtil.addHyphens(accountNumber, new int[]{3, 9, 11});
+  }
+
 }

@@ -25,4 +25,13 @@ public class KBBank implements BankCode {
     return false;
   }
 
+  @Override
+  public String formatAccountNumber(String accountNumber) {
+
+    if (accountNumber.length() == 12) {
+      return BankUtil.addHyphens(accountNumber, new int[]{3, 5, 9});
+    }
+    return BankUtil.addHyphens(accountNumber, new int[]{6, 8});
+  }
+
 }

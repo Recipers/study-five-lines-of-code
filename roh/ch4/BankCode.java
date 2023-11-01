@@ -10,4 +10,6 @@ public interface BankCode {
 
   boolean isSuHyup();
 
+  String formatAccountNumber(String accountNumber);
+
 }
