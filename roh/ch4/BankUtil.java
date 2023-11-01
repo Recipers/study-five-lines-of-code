@@ -5,42 +5,37 @@ public class BankUtil {
 
   public static final String ACCOUNT_DELIMITER = "-";
 
-  public static String formatAccountNumber(String accountNumber, String bankCode) throws Exception {
-
-    return formatAccountNumber(accountNumber, BankCode.getBankByCode(bankCode));
-  }
-
   public static String formatAccountNumber(String accountNumber, BankCode bankCode) {
 
     if (bankCode == null) {
       return accountNumber;
     }
 
-    if (bankCode == BankCode.KDB_BANK) {
+    if (bankCode.isKDB()) {
       if (accountNumber.length() == 11) {
         accountNumber = addHyphens(accountNumber, new int[]{3, 5, 10});
       } else {
         accountNumber = addHyphens(accountNumber, new int[]{3, 11});
       }
-    } else if (bankCode == BankCode.IBK_BANK) {
+    } else if (bankCode.isIBK()) {
       if (accountNumber.length() == 12) {
         accountNumber = addHyphens(accountNumber, new int[]{3, 5, 10});
       } else {
         accountNumber = addHyphens(accountNumber, new int[]{3, 9, 11});
       }
-    } else if (bankCode == BankCode.KB_BANK) {
+    } else if (bankCode.isKB()) {
       if (accountNumber.length() == 12) {
         accountNumber = addHyphens(accountNumber, new int[]{3, 5, 9});
       } else {
         accountNumber = addHyphens(accountNumber, new int[]{6, 8});
       }
-    } else if (bankCode == BankCode.KEB_BANK) {
+    } else if (bankCode.isKEB()) {
       if (accountNumber.length() == 11) {
         accountNumber = addHyphens(accountNumber, new int[]{3, 5, 10});
       } else {
         accountNumber = addHyphens(accountNumber, new int[]{3, 9});
       }
-    } else if (bankCode == BankCode.KEB_BANK) {
+    } else if (bankCode.isSuHyup()) {
       if (accountNumber.length() == 11) {
         accountNumber = addHyphens(accountNumber, new int[]{3, 5, 10});
       } else if (accountNumber.length() == 12) {
