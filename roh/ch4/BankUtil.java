@@ -16,158 +16,81 @@ public class BankUtil {
       return accountNumber;
     }
 
-    switch (bankCode) {
-      case KDB_BANK:
-        if (accountNumber.length() == 11) {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 5, 10});
-        } else {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 11});
-        }
-        break;
-      case IBK_BANK:
-        if (accountNumber.length() == 12) {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 5, 10});
-        } else {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 9, 11});
-        }
-        break;
-      case KB_BANK:
-        if (accountNumber.length() == 12) {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 5, 9});
-        } else {
-          accountNumber = addHyphens(accountNumber, new int[]{6, 8});
-        }
-        break;
-      case KEB_BANK:
-        if (accountNumber.length() == 11) {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 5, 10});
-        } else {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 9});
-        }
-        break;
-      case SUHYUP_BANK:
-        if (accountNumber.length() == 11) {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 5, 10});
-        } else if (accountNumber.length() == 12) {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 11});
-        } else {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 5, 13});
-        }
-        break;
-      case NONGHYUP_BANK:
-        accountNumber = addHyphens(accountNumber, new int[]{3, 7, 11});
-        break;
-      case NONGHYUP_REGION_BANK:
-      case WOORI_BANK:
-        accountNumber = addHyphens(accountNumber, new int[]{4, 7});
-        break;
-      case SC_BANK:
-        accountNumber = addHyphens(accountNumber, new int[]{3, 5});
-        break;
-      case CITI_BANK:
-        accountNumber = addHyphens(accountNumber, new int[]{3, 9});
-        break;
-      case DAEGU_BANK:
-        accountNumber = addHyphens(accountNumber, new int[]{3, 5, 11});
-        break;
-      case BUSAN_BANK:
-        accountNumber = addHyphens(accountNumber, new int[]{3, 7, 11});
-        break;
-      case GWANGJU_BANK:
-        accountNumber = addHyphens(accountNumber, new int[]{3, 6});
-        break;
-      case JEJU_BANK:
-        accountNumber = addHyphens(accountNumber, new int[]{2, 4});
-        break;
-      case JEONBUK_BANK:
-        if (accountNumber.length() == 12) {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 5});
-        } else {
-          accountNumber = addHyphens(accountNumber, new int[]{1, 4, 6});
-        }
-        break;
-      case KN_BANK:
-        if (accountNumber.length() == 12) {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 5});
-        } else {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 12});
-        }
-        break;
-      case KFCC:
-        if (accountNumber.length() == 13) {
-          accountNumber = addHyphens(accountNumber, new int[]{4, 6, 12});
-        } else {
-          accountNumber = addHyphens(accountNumber, new int[]{4, 7, 13});
-        }
-        break;
-      case SHINHYUP:
-        if (accountNumber.length() == 10) {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 6});
-        } else if (accountNumber.length() == 11) {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 7});
-        } else if (accountNumber.length() == 12) {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 6, 11});
-        } else if (accountNumber.length() == 13) {
-          accountNumber = addHyphens(accountNumber, new int[]{5, 7, 12});
-        } else {
-          accountNumber = addHyphens(accountNumber, new int[]{5, 7, 13});
-        }
-        break;
-      case MUTUAL_SAVING_BANK:
-        accountNumber = addHyphens(accountNumber, new int[]{3, 5, 7, 13});
-        break;
-      case HSBC_BANK:
-        accountNumber = addHyphens(accountNumber, new int[]{3, 6, 7});
-        break;
-      case DEUTSCHE_BANK:
-        accountNumber = addHyphens(accountNumber, new int[]{2, 7});
-        break;
-      case POST_OFFICE:
+    if (bankCode == BankCode.KDB_BANK) {
+      if (accountNumber.length() == 11) {
+        accountNumber = addHyphens(accountNumber, new int[]{3, 5, 10});
+      } else {
+        accountNumber = addHyphens(accountNumber, new int[]{3, 11});
+      }
+    } else if (bankCode == BankCode.IBK_BANK) {
+      if (accountNumber.length() == 12) {
+        accountNumber = addHyphens(accountNumber, new int[]{3, 5, 10});
+      } else {
+        accountNumber = addHyphens(accountNumber, new int[]{3, 9, 11});
+      }
+    } else if (bankCode == BankCode.KB_BANK) {
+      if (accountNumber.length() == 12) {
+        accountNumber = addHyphens(accountNumber, new int[]{3, 5, 9});
+      } else {
         accountNumber = addHyphens(accountNumber, new int[]{6, 8});
-        break;
-      case SHINHAN_BANK:
-        if (accountNumber.length() == 11) {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 5});
-        } else {
-          accountNumber = addHyphens(accountNumber, new int[]{3, 6});
-        }
-        break;
-      case K_BANK:
-        accountNumber = addHyphens(accountNumber, new int[]{3, 6});
-        break;
-      case KAKAO_BANK:
-        accountNumber = addHyphens(accountNumber, new int[]{4, 6});
-        break;
-      case KOREA_BANK:
-      case EXIM_BANK:
-      case MORGAN_STANLEY_BANK:
-        break;
-      default:
-        break;
+      }
+    } else if (bankCode == BankCode.KEB_BANK) {
+      if (accountNumber.length() == 11) {
+        accountNumber = addHyphens(accountNumber, new int[]{3, 5, 10});
+      } else {
+        accountNumber = addHyphens(accountNumber, new int[]{3, 9});
+      }
+    } else if (bankCode == BankCode.KEB_BANK) {
+      if (accountNumber.length() == 11) {
+        accountNumber = addHyphens(accountNumber, new int[]{3, 5, 10});
+      } else if (accountNumber.length() == 12) {
+        accountNumber = addHyphens(accountNumber, new int[]{3, 11});
+      } else {
+        accountNumber = addHyphens(accountNumber, new int[]{3, 5, 13});
+      }
     }
-
     return accountNumber;
   }
 
   private static String addHyphens(String accountNumber, int... positions) {
 
-    List<String> subStringList = new ArrayList<>();
-    if (accountNumber.length() < positions[positions.length - 1]) {
+    if (lengthOfAccountNumber(accountNumber) < lastPosition(positions)) {
       return accountNumber;
     }
+
+    List<String> subStringList = mapStringToListByPosition(accountNumber, positions);
+    return String.join(ACCOUNT_DELIMITER, subStringList);
+  }
+
+  private static int lengthOfAccountNumber(String accountNumber) {
+    return accountNumber.length();
+  }
+
+  private static int lastPosition(int... positions) {
+    return positions[positions.length - 1];
+  }
+
+  private static int findSubstringBegin(int index, int... positions) {
+    int begin;
+    if (index == 0) {
+      begin = 0;
+    } else {
+      begin = positions[index - 1];
+    }
+    return begin;
+  }
+
+  private static List<String> mapStringToListByPosition(String accountNumber, int... positions) {
+
+    List<String> subStringList = new ArrayList<>();
     for (int i = 0; i < positions.length; i++) {
-      int begin;
-      if (i == 0) {
-        begin = 0;
-      } else {
-        begin = positions[i - 1];
-      }
+      int begin = findSubstringBegin(i, positions);
       subStringList.add(accountNumber.substring(begin, positions[i]));
       if (i == positions.length - 1) {
         subStringList.add(accountNumber.substring(positions[i]));
       }
     }
-    return String.join(ACCOUNT_DELIMITER, subStringList);
+    return subStringList;
   }
 
 }
