@@ -1,11 +1,10 @@
-package message;
-
+package send;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MessageRelayer {
+public class Relayer {
 
   private String template;
 
@@ -13,28 +12,27 @@ public class MessageRelayer {
 
   private String title;
 
-  private final Set<MessageReceiver> receivers;
+  private final Set<Receiver> receivers;
 
-  public MessageRelayer(LocalDateTime sendTime, String template) {
+  public Relayer(LocalDateTime sendTime, String template) {
 
     this.sendTime = sendTime;
     this.template = template;
     this.receivers = new HashSet<>();
   }
 
-  public MessageRelayer(LocalDateTime sendTime, String title, String template) {
+  public Relayer(LocalDateTime sendTime, String title, String template) {
 
     this(sendTime, template);
     this.title = title;
   }
 
-
-  public void addReceivers(MessageReceiver receiver) {
+  public void addReceivers(Receiver receiver) {
 
     this.receivers.add(receiver);
   }
 
-  public void removeReceivers(MessageReceiver receiver) {
+  public void removeReceivers(Receiver receiver) {
 
     this.receivers.remove(receiver);
   }
@@ -69,7 +67,7 @@ public class MessageRelayer {
     this.title = title;
   }
 
-  public Set<MessageReceiver> getReceivers() {
+  public Set<Receiver> getReceivers() {
 
     return this.receivers;
   }

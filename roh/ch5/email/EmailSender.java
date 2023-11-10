@@ -1,8 +1,12 @@
 package email;
 
+import send.AgentDeviceInfo;
+import send.Receiver;
+import send.Relayer;
+import send.Sender;
 import util.TemplateUtil;
 
-public class EmailSender {
+public class EmailSender implements Sender {
 
   private final EmailRepository emailRepository;
 
@@ -11,34 +15,38 @@ public class EmailSender {
     this.emailRepository = emailRepository;
   }
 
-  public void doEmailSend(EmailRelayer relayer) {
+  @Override
+  public void doSend(Relayer relayer) {
 
     loadTemplateContent(relayer);
-    for (EmailReceiver receiver : relayer.getReceivers()) {
+    for (Receiver receiver : relayer.getReceivers()) {
       receiver.setMessage(
           TemplateUtil.replaceTemplateBlock(relayer.getTemplate(), receiver.getTemplateMap()));
     }
 
-    writeEmailAgentTables(relayer);
+    writeAgentTable(relayer);
   }
 
-  protected void loadTemplateContent(EmailRelayer relayer) {
+  @Override
+  public void loadTemplateContent(Relayer relayer) {
 
     // load template contents
   }
 
-  protected void writeEmailAgentTables(EmailRelayer relayer) {
+  @Override
+  public void writeAgentTable(Relayer relayer) {
 
-    EmailDeviceInfo emailDeviceInfo = null;
-    for (EmailReceiver receiver : relayer.getReceivers()) {
-      emailDeviceInfo = getEmailDeviceInfo();
+    AgentDeviceInfo agentDeviceInfo = null;
+    for (Receiver receiver : relayer.getReceivers()) {
+      agentDeviceInfo = getAgentDeviceInfo();
     }
     emailRepository.save();
   }
 
-  protected EmailDeviceInfo getEmailDeviceInfo() {
+  @Override
+  public AgentDeviceInfo getAgentDeviceInfo() {
 
-    return new EmailDeviceInfo();
+    return new AgentDeviceInfo();
   }
 
 }
