@@ -1,18 +1,24 @@
 package message;
 
+import email.EmailRepository;
 import send.AgentDeviceInfo;
 import send.Receiver;
 import send.Relayer;
+import send.SendType;
 import send.Sender;
+import send.SenderStrategy;
 import util.TemplateUtil;
 
 public class MessageSender implements Sender {
 
-  private final MessageRepository messageRepository;
+  private final SenderStrategy senderStrategy;
 
-  public MessageSender(MessageRepository messageRepository) {
+  private final SendType sendType;
 
-    this.messageRepository = messageRepository;
+  public MessageSender(SendType sendType, SenderStrategy senderStrategy) {
+
+    this.sendType = sendType;
+    this.senderStrategy = senderStrategy;
   }
 
   public void doSend(Relayer relayer) {
@@ -31,12 +37,12 @@ public class MessageSender implements Sender {
   }
 
   public void writeAgentTable(Relayer relayer) {
-    
+
     AgentDeviceInfo agentDeviceInfo = null;
     for (Receiver receiver : relayer.getReceivers()) {
       agentDeviceInfo = getAgentDeviceInfo();
     }
-    messageRepository.save();
+    senderStrategy.save(this.sendType);
   }
 
   public AgentDeviceInfo getAgentDeviceInfo() {
