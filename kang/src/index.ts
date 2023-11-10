@@ -19,6 +19,26 @@ interface FallingState {
   moveHorizontal(tile: Tile, dx: number): void;
 }
 
+class FallStrategy {
+  constructor(private falling: FallingState) {}
+
+  update(tile: Tile, x: number, y: number) {
+    this.falling = map[y + 1][x].isAir()
+      ? new Falling()
+      : new Resting();
+    this.drop(tile, x, y);
+  }
+
+  getFalling() { return this.falling; }
+
+  private drop(tile: Tile, x: number, y: number) {
+    if (this.falling.isFalling()) {
+      map[y + 1][x] = tile;
+      map[y][x] = new Air();
+    }
+  }
+}
+
 class Falling implements FallingState {
   isFalling(): boolean {
     return true;
@@ -38,26 +58,6 @@ class Resting implements FallingState {
     if (map[playery][playerx + dx + dx].isAir() && !map[playery + 1][playerx + dx].isAir()) {
       map[playery][playerx + dx + dx] = tile;
       moveToTile(playerx + dx, playery);
-    }
-  }
-}
-
-class FallStrategy {
-  constructor(private falling: FallingState) {}
-
-  update(tile: Tile, x: number, y: number) {
-    this.falling = map[y + 1][x].isAir()
-      ? new Falling()
-      : new Resting();
-    this.drop(tile, x, y);
-  }
-
-  getFalling() { return this.falling; }
-
-  private drop(tile: Tile, x: number, y: number) {
-    if (this.falling.isFalling()) {
-      map[y + 1][x] = tile;
-      map[y][x] = new Air();
     }
   }
 }
@@ -181,11 +181,11 @@ class Key1 implements Tile {
     g.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
   }
   moveHorizontal(dx: number) {
-    removeLock1();
+    remove(new RemoveLock1());
     moveToTile(playerx + dx, playery);
   }
   moveVertical(dy: number) {
-    removeLock1();
+    remove(new RemoveLock1());
     moveToTile(playerx, playery + dy);
   }
   update(x: number, y: number): void {}
@@ -213,11 +213,11 @@ class Key2 implements Tile {
     g.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
   }
   moveHorizontal(dx: number) {
-    removeLock2();
+    remove(new RemoveLock2());
     moveToTile(playerx + dx, playery);
   }
   moveVertical(dy: number) {
-    removeLock2();
+    remove(new RemoveLock2());
     moveToTile(playerx, playery + dy);
   }
   update(x: number, y: number): void {}
@@ -264,6 +264,7 @@ class Down implements Input {
   }
 
 }
+
 let playerx = 1;
 let playery = 1;
 let rawMap: RawTile[][] = [
@@ -275,10 +276,10 @@ let rawMap: RawTile[][] = [
   [2, 2, 2, 2, 2, 2, 2, 2],
 ];
 let map: Tile[][];
-
 function assertExhausted(x: never): never {
   throw new Error('Unexpected object: ' + x);
 }
+
 function transformTile(tile: RawTile) {
   switch (tile) {
     case RawTile.AIR: return new Air();
@@ -296,7 +297,6 @@ function transformTile(tile: RawTile) {
     default: assertExhausted(tile);
   }
 }
-
 function transformMap() {
   map = new Array(rawMap.length);
   for (let y = 0; y < rawMap.length; y++) {
@@ -309,23 +309,29 @@ function transformMap() {
 
 let inputs: Input[] = [];
 
-function removeLock1() {
+function remove(shouldRemove: RemoveStrategy) {
   for (let y = 0; y < map.length; y++) {
     for (let x = 0; x < map[y].length; x++) {
-      if (map[y][x].isLock1()) {
+      if (shouldRemove.check(map[y][x])) {
         map[y][x] = new Air();
       }
     }
   }
 }
 
-function removeLock2() {
-  for (let y = 0; y < map.length; y++) {
-    for (let x = 0; x < map[y].length; x++) {
-      if (map[y][x].isLock2()) {
-        map[y][x] = new Air();
-      }
-    }
+interface RemoveStrategy {
+  check(tile: Tile): boolean;
+}
+
+class RemoveLock1 implements RemoveStrategy {
+  check(tile: Tile) {
+    return tile.isLock1();
+  }
+}
+
+class RemoveLock2 implements RemoveStrategy {
+  check(tile: Tile) {
+    return tile.isLock2();
   }
 }
 
