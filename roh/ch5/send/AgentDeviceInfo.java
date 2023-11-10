@@ -1,7 +1,6 @@
-package email;
+package send;
 
-
-public class EmailDeviceInfo {
+public class AgentDeviceInfo {
 
   private Integer waitingCount;
 

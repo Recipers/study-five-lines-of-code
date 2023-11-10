@@ -1,8 +1,12 @@
 package message;
 
+import send.AgentDeviceInfo;
+import send.Receiver;
+import send.Relayer;
+import send.Sender;
 import util.TemplateUtil;
 
-public class MessageSender {
+public class MessageSender implements Sender {
 
   private final MessageRepository messageRepository;
 
@@ -11,34 +15,33 @@ public class MessageSender {
     this.messageRepository = messageRepository;
   }
 
-  public void doSend(MessageRelayer relayer) {
+  public void doSend(Relayer relayer) {
 
     loadTemplateContent(relayer);
-    for (MessageReceiver receiver : relayer.getReceivers()) {
+    for (Receiver receiver : relayer.getReceivers()) {
       receiver.addMessage(
           TemplateUtil.replaceTemplateBlock(relayer.getTemplate(), receiver.getTemplateMap()));
     }
-    writeMessageAgentTable(relayer);
+    writeAgentTable(relayer);
   }
 
 
-  protected void loadTemplateContent(MessageRelayer relayer) {
+  public void loadTemplateContent(Relayer relayer) {
 
   }
 
-  protected void writeMessageAgentTable(MessageRelayer relayer) {
-
-
-    MessageDeviceInfo messageDeviceInfo = null;
-    for (MessageReceiver receiver : relayer.getReceivers()) {
-      messageDeviceInfo = getMessageDeviceInfo();
+  public void writeAgentTable(Relayer relayer) {
+    
+    AgentDeviceInfo agentDeviceInfo = null;
+    for (Receiver receiver : relayer.getReceivers()) {
+      agentDeviceInfo = getAgentDeviceInfo();
     }
     messageRepository.save();
   }
 
-  protected MessageDeviceInfo getMessageDeviceInfo() {
+  public AgentDeviceInfo getAgentDeviceInfo() {
 
-    return new MessageDeviceInfo();
+    return new AgentDeviceInfo();
   }
 
 }

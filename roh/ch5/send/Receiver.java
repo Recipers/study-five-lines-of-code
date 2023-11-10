@@ -1,22 +1,27 @@
-package email;
+package send;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class EmailReceiver {
+public class Receiver {
 
+  private String cell;
   private String email;
 
   private String name;
 
-  private String message;
+  private final List<String> messages;
 
   private final Map<String, String> templateMap;
 
-  public EmailReceiver(String email, String name) {
+  public Receiver(String cell, String email, String name) {
 
+    this.cell = cell;
     this.email = email;
     this.name = name;
+    this.messages = new ArrayList<>();
     this.templateMap = new HashMap<>();
   }
 
@@ -33,6 +38,16 @@ public class EmailReceiver {
       copyMap.put(entry.getKey(), entry.getValue());
     }
     return copyMap;
+  }
+
+  public String getCell() {
+
+    return cell;
+  }
+
+  public void setCell(String cell) {
+
+    this.cell = cell;
   }
 
   public String getEmail() {
@@ -55,14 +70,9 @@ public class EmailReceiver {
     this.name = name;
   }
 
-  public String getMessage() {
+  public void addMessage(String message) {
 
-    return message;
-  }
-
-  public void setMessage(String message) {
-
-    this.message = message;
+    messages.add(message);
   }
 
 }
