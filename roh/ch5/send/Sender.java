@@ -1,16 +1,48 @@
 package send;
 
 import send.AgentDeviceInfo;
+import send.MessageSenderStrategy;
+import send.Receiver;
 import send.Relayer;
+import send.SenderStrategy;
+import util.TemplateUtil;
 
-public interface Sender {
+public class Sender {
 
-  void doSend(Relayer relayer);
+  private final SenderStrategy senderStrategy;
 
-  void loadTemplateContent(Relayer relayer);
+  public Sender(SenderStrategy senderStrategy) {
 
-  void writeAgentTable(Relayer relayer);
+    this.senderStrategy = senderStrategy;
+  }
 
-  AgentDeviceInfo getAgentDeviceInfo();
+  public void doSend(Relayer relayer) {
+
+    loadTemplateContent(relayer);
+    for (Receiver receiver : relayer.getReceivers()) {
+      receiver.addMessage(
+          TemplateUtil.replaceTemplateBlock(relayer.getTemplate(), receiver.getTemplateMap()));
+    }
+    writeAgentTable(relayer);
+  }
+
+
+  public void loadTemplateContent(Relayer relayer) {
+
+  }
+
+  public void writeAgentTable(Relayer relayer) {
+
+    AgentDeviceInfo agentDeviceInfo = null;
+    for (Receiver receiver : relayer.getReceivers()) {
+      agentDeviceInfo = getAgentDeviceInfo();
+    }
+    senderStrategy.save(relayer);
+  }
+
+  public AgentDeviceInfo getAgentDeviceInfo() {
+
+    return new AgentDeviceInfo();
+  }
 
 }
