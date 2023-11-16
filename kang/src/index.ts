@@ -17,6 +17,7 @@ enum RawTile {
 interface FallingState {
   isFalling(): boolean;
   moveHorizontal(tile: Tile, dx: number): void;
+  drop(tile: Tile, x: number, y: number): void;
 }
 
 class FallStrategy {
@@ -24,14 +25,7 @@ class FallStrategy {
 
   update(tile: Tile, x: number, y: number) {
     this.falling = map[y + 1][x].getBlockOnTopState();
-    this.drop(tile, x, y);
-  }
-
-  private drop(tile: Tile, x: number, y: number) {
-    if (this.falling.isFalling()) {
-      map[y + 1][x] = tile;
-      map[y][x] = new Air();
-    }
+    this.falling.drop(tile, x, y);
   }
 
   moveHorizontal(tile: Tile, dx: number) {
@@ -46,7 +40,10 @@ class Falling implements FallingState {
 
   moveHorizontal(tile: Tile, dx: number): void {
   }
-
+  drop(tile: Tile, x: number, y: number) {
+    map[y + 1][x] = tile;
+    map[y][x] = new Air();
+  }
 }
 
 class Resting implements FallingState {
@@ -59,6 +56,8 @@ class Resting implements FallingState {
       map[playery][playerx + dx + dx] = tile;
       moveToTile(playerx + dx, playery);
     }
+  }
+  drop(tile: Tile, x: number, y: number) {
   }
 }
 
