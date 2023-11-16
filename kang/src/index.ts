@@ -179,15 +179,15 @@ class Key implements Tile {
   isLock1() { return false; }
   isLock2() { return false; }
   draw(g: CanvasRenderingContext2D, x: number, y: number): void {
-    g.fillStyle = this.keyConf.getColor();
-    g.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    this.keyConf.setColor(g);
+    this.keyConf.rectFill(g, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE)
   }
   moveHorizontal(dx: number) {
-    remove(this.keyConf.getRemoveStrategy());
+    this.keyConf.removeLock();
     moveToTile(playerx + dx, playery);
   }
   moveVertical(dy: number) {
-    remove(this.keyConf.getRemoveStrategy());
+    this.keyConf.removeLock();
     moveToTile(playerx, playery + dy);
   }
   update(x: number, y: number): void {}
@@ -200,8 +200,8 @@ class LockFive implements Tile { // lib.dom.d.ts(9112, 11): 'Lock' was also decl
   isLock1() { return this.keyConf.is1() }
   isLock2() { return !this.keyConf.is1(); }
   draw(g: CanvasRenderingContext2D, x: number, y: number): void {
-    g.fillStyle = this.keyConf.getColor();
-    g.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    this.keyConf.setColor(g);
+    this.keyConf.rectFill(g, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE)
   }
   moveHorizontal(dx: number) { }
   moveVertical(dy: number) { }
@@ -312,9 +312,17 @@ class KeyConfiguration {
     private color: string,
     private _1: boolean,
     private removeStrategy: RemoveStrategy) {}
-  getColor() { return this.color; }
+  setColor(g: CanvasRenderingContext2D) {
+    g.fillStyle = this.color;
+  }
   is1() { return this._1; }
-  getRemoveStrategy() { return this.removeStrategy;}
+  removeLock() {
+    remove(this.removeStrategy);
+  }
+
+  rectFill(g: CanvasRenderingContext2D, x: number, y: number, tileSize: number) {
+    g.fillRect(x, y, tileSize, tileSize);
+  }
 }
 const YELLOW_KEY = new KeyConfiguration('#ffcc00', true, new RemoveLock1());
 const BLUE_KEY = new KeyConfiguration('#00ccff', false, new RemoveLock2());
