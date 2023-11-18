@@ -2,7 +2,6 @@ package ch6_1.service;
 
 import java.io.File;
 import ch6_1.config.PathConfiguration;
-import ch6_1.data.Group;
 import ch6_1.data.GroupFile;
 
 public class FileService {
@@ -16,15 +15,8 @@ public class FileService {
 
   public File findGroupAdminFileInDisk(GroupFile groupFile) {
 
-    String groupFilePath = getGroupAdminFilePath(groupFile);
+    String groupFilePath = groupFile.getGroupFilePath(pathConfiguration);
     return new File(groupFilePath);
-  }
-
-  private String getGroupAdminFilePath(GroupFile groupFile) {
-
-    Group group = groupFile.getGroup();
-    return String.join(File.separator, pathConfiguration.getGroupPath(),
-        String.valueOf(group.getGroupSequence()), groupFile.getFilePath());
   }
 
 }

@@ -1,12 +1,16 @@
 package ch6_1.data;
 
+import java.io.File;
+import ch6_1.config.PathConfiguration;
+
 public class Group {
 
   private Integer groupSequence;
 
-  public Integer getGroupSequence() {
+  public String groupDirectoryPath(PathConfiguration pathConfiguration) {
 
-    return this.groupSequence;
+    return String.join(File.separator, pathConfiguration.getGroupPath(),
+        String.valueOf(this.groupSequence));
   }
 
 }

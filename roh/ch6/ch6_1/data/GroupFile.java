@@ -1,5 +1,7 @@
 package ch6_1.data;
 
+import java.io.File;
+import ch6_1.config.PathConfiguration;
 
 public class GroupFile {
 
@@ -9,19 +11,9 @@ public class GroupFile {
 
   private Group group;
 
-  public Integer getFileSequence() {
+  public String getGroupFilePath(PathConfiguration pathConfiguration) {
 
-    return this.fileSequence;
-  }
-
-  public String getFilePath() {
-
-    return this.filePath;
-  }
-
-  public Group getGroup() {
-
-    return this.group;
+    return String.join(File.separator, group.groupDirectoryPath(pathConfiguration), this.filePath);
   }
 
 }
